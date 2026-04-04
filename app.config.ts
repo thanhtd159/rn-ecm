@@ -10,7 +10,9 @@ const config: ExpoConfig = {
   scheme: "ecommerce",
 
   extra: {
-    API_URL: IS_DEV ? "https://dev-api.com" : "https://prod-api.com",
+    API_URL: IS_DEV
+      ? "http://192.168.100.26:3000"
+      : "http://192.168.100.26:3000",
   },
 
   ios: {

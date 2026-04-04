@@ -1,16 +1,48 @@
 import { createMMKV } from "react-native-mmkv";
 
-export const storage = createMMKV();
+const storage = createMMKV();
 
-export function getItem<T>(key: string): T | null {
-  const value = storage.getString(key);
-  return value ? JSON.parse(value) || null : null;
-}
+export const storageService = {
+  setItem: <T>(key: string, value: T): void => {
+    try {
+      storage.set(key, JSON.stringify(value));
+    } catch (error) {
+      console.error("MMKV setItem error:", error);
+    }
+  },
 
-export async function setItem<T>(key: string, value: T) {
-  storage.set(key, JSON.stringify(value));
-}
+  getItem: <T>(key: string): T | null => {
+    try {
+      const value = storage.getString(key);
+      return value ? (JSON.parse(value) as T) : null;
+    } catch (error) {
+      console.error("MMKV getItem error:", error);
+      return null;
+    }
+  },
 
-export async function removeItem(key: string) {
-  storage.remove(key);
-}
+  removeItem: (key: string): void => {
+    try {
+      storage.remove(key);
+    } catch (error) {
+      console.error("MMKV removeItem error:", error);
+    }
+  },
+
+  clearAll: (): void => {
+    try {
+      storage.clearAll();
+    } catch (error) {
+      console.error("MMKV clearAll error:", error);
+    }
+  },
+
+  getAllKeys: (): string[] => {
+    try {
+      return storage.getAllKeys();
+    } catch (error) {
+      console.error("MMKV getAllKeys error:", error);
+      return [];
+    }
+  },
+};

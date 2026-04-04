@@ -1,10 +1,18 @@
-import z from 'zod';
+import Constants from "expo-constants";
+import z from "zod";
+import packageJSON from "./package.json";
 
-import packageJSON from './package.json';
+// Validate env at runtime
+const extra = Constants.expoConfig?.extra;
+export const ENV = {
+  API_URL: extra?.API_URL as string,
+  APP_ENV: extra?.APP_ENV as "development" | "preview" | "production",
+  IS_DEV: extra?.APP_ENV === "development",
+};
 
 // Single unified environment schema
 const envSchema = z.object({
-  EXPO_PUBLIC_APP_ENV: z.enum(['development', 'preview', 'production']),
+  EXPO_PUBLIC_APP_ENV: z.enum(["development", "preview", "production"]),
   EXPO_PUBLIC_NAME: z.string(),
   EXPO_PUBLIC_SCHEME: z.string(),
   EXPO_PUBLIC_BUNDLE_ID: z.string(),
@@ -20,31 +28,31 @@ const envSchema = z.object({
 });
 
 // Config records per environment
-const EXPO_PUBLIC_APP_ENV = (process.env.EXPO_PUBLIC_APP_ENV
-  ?? 'development') as z.infer<typeof envSchema>['EXPO_PUBLIC_APP_ENV'];
+const EXPO_PUBLIC_APP_ENV = (process.env.EXPO_PUBLIC_APP_ENV ??
+  "development") as z.infer<typeof envSchema>["EXPO_PUBLIC_APP_ENV"];
 
 const BUNDLE_IDS = {
-  development: 'com.obytes.development',
-  preview: 'com.obytes.preview',
-  production: 'com.obytes',
+  development: "com.obytes.development",
+  preview: "com.obytes.preview",
+  production: "com.obytes",
 } as const;
 
 const PACKAGES = {
-  development: 'com.obytes.development',
-  preview: 'com.obytes.preview',
-  production: 'com.obytes',
+  development: "com.obytes.development",
+  preview: "com.obytes.preview",
+  production: "com.obytes",
 } as const;
 
 const SCHEMES = {
-  development: 'obytesApp',
-  preview: 'obytesApp.preview',
-  production: 'obytesApp',
+  development: "obytesApp",
+  preview: "obytesApp.preview",
+  production: "obytesApp",
 } as const;
 
-const NAME = 'ObytesApp';
+const NAME = "ObytesApp";
 
 // Check if strict validation is required (before prebuild)
-const STRICT_ENV_VALIDATION = process.env.STRICT_ENV_VALIDATION === '1';
+const STRICT_ENV_VALIDATION = process.env.STRICT_ENV_VALIDATION === "1";
 
 // Build env object
 const _env: z.infer<typeof envSchema> = {
@@ -54,10 +62,10 @@ const _env: z.infer<typeof envSchema> = {
   EXPO_PUBLIC_BUNDLE_ID: BUNDLE_IDS[EXPO_PUBLIC_APP_ENV],
   EXPO_PUBLIC_PACKAGE: PACKAGES[EXPO_PUBLIC_APP_ENV],
   EXPO_PUBLIC_VERSION: packageJSON.version,
-  EXPO_PUBLIC_API_URL: process.env.EXPO_PUBLIC_API_URL ?? '',
+  EXPO_PUBLIC_API_URL: process.env.EXPO_PUBLIC_API_URL ?? "",
   EXPO_PUBLIC_ASSOCIATED_DOMAIN: process.env.EXPO_PUBLIC_ASSOCIATED_DOMAIN,
   EXPO_PUBLIC_VAR_NUMBER: Number(process.env.EXPO_PUBLIC_VAR_NUMBER ?? 0),
-  EXPO_PUBLIC_VAR_BOOL: process.env.EXPO_PUBLIC_VAR_BOOL === 'true',
+  EXPO_PUBLIC_VAR_BOOL: process.env.EXPO_PUBLIC_VAR_BOOL === "true",
   APP_BUILD_ONLY_VAR: process.env.APP_BUILD_ONLY_VAR,
 };
 
@@ -65,19 +73,20 @@ function getValidatedEnv(env: z.infer<typeof envSchema>) {
   const parsed = envSchema.safeParse(env);
 
   if (parsed.success === false) {
-    const errorMessage
-      = `❌ Invalid environment variables:${
-        JSON.stringify(parsed.error.flatten().fieldErrors, null, 2)
-      }\n❌ Missing variables in .env file for APP_ENV=${EXPO_PUBLIC_APP_ENV}`
-      + `\n💡 Tip: If you recently updated the .env file, try restarting with -c flag to clear the cache.`;
+    const errorMessage =
+      `❌ Invalid environment variables:${JSON.stringify(
+        parsed.error.flatten().fieldErrors,
+        null,
+        2,
+      )}\n❌ Missing variables in .env file for APP_ENV=${EXPO_PUBLIC_APP_ENV}` +
+      `\n💡 Tip: If you recently updated the .env file, try restarting with -c flag to clear the cache.`;
 
     if (STRICT_ENV_VALIDATION) {
       console.error(errorMessage);
-      throw new Error('Invalid environment variables');
+      throw new Error("Invalid environment variables");
     }
-  }
-  else {
-    console.log('✅ Environment variables validated successfully');
+  } else {
+    console.log("✅ Environment variables validated successfully");
   }
 
   return parsed.success ? parsed.data : env;

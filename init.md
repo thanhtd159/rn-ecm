@@ -415,6 +415,20 @@ npx expo install @expo-google-fonts/inter expo-font
 npx expo install react-native-reanimated react-native-gesture-handler
 npm install @gorhom/bottom-sheet
 
+---
+
+setup Redux Toolkit + React Redux + Redux Saga + Logger chuẩn cho React Native (Expo) theo kiểu enterprise (giống NgRx bạn đang quen)
+npm install @reduxjs/toolkit react-redux redux-saga redux-logger
+npm install -D @types/redux-logger
+
+Stack này sẽ như sau:
+@reduxjs/toolkit → tạo store + reducer
+react-redux → connect UI
+redux-saga → xử lý async (thay cho effects trong NgRx)
+redux-logger → debug log action
+
+---
+
 Form & Validation
 Library Mô tả Vai trò
 @tanstack/react-form Form state Quản lý form

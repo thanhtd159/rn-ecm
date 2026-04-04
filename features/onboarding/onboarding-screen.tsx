@@ -1,5 +1,5 @@
-import { useRouter } from 'expo-router';
-import * as React from 'react';
+import { useRouter } from "expo-router";
+import * as React from "react";
 
 import {
   Button,
@@ -7,9 +7,9 @@ import {
   SafeAreaView,
   Text,
   View,
-} from '@/components/ui';
-import { useIsFirstTime } from '@/lib/hooks';
-import { Cover } from './components/cover';
+} from "@/components/ui";
+import { useIsFirstTime } from "@/lib/hooks";
+import { Cover } from "./components/cover";
 
 export function OnboardingScreen() {
   const [_, setIsFirstTime] = useIsFirstTime();
@@ -29,8 +29,7 @@ export function OnboardingScreen() {
         </Text>
 
         <Text className="my-1 pt-6 text-left text-lg">
-          🚀 Production-ready
-          {' '}
+          🚀 Production-ready{" "}
         </Text>
         <Text className="my-1 text-left text-lg">
           🥷 Developer experience + Productivity
@@ -47,7 +46,7 @@ export function OnboardingScreen() {
           label="Let's Get Started "
           onPress={() => {
             setIsFirstTime(false);
-            router.replace('/login');
+            router.replace("/login");
           }}
         />
       </SafeAreaView>

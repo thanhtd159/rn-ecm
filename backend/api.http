@@ -1,0 +1,354 @@
+@host = http://localhost:3000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3NDA2MzQ2NywiZXhwIjoxNzc0MDY0MzY3fQ.IR3GuYl3Uapn-aLeD2y5kOOw8FMvTUZHPU6LW32Qmkk
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MzUwNDU0NCwiZXhwIjoxNzc0MTA5MzQ0fQ.1j734BBZt-6O_jBpcX8AjxebZVKixhSYDemRtNZFwIY
+
+
+
+
+####################################################
+# AUTH
+####################################################
+
+### Login
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin@gmail.com",
+  "password": "123456"
+}
+
+
+### Refresh Token
+POST {{host}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+
+####################################################
+# PRODUCTS
+####################################################
+
+### Get Products (Pagination)
+GET {{host}}/products?page=1&limit=10
+Authorization: Bearer {{token}}
+
+### Search Products
+GET {{host}}/products?search=iphone
+Authorization: Bearer {{token}}
+
+### Filter Products
+GET {{host}}/products?category=phone
+Authorization: Bearer {{token}}
+
+### Get Product Detail
+GET {{host}}/products/1
+Authorization: Bearer {{token}}
+
+### Create Product
+POST {{host}}/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id": 10,
+  "name": "Samsung S24",
+  "price": 21000000,
+  "category": "phone",
+  "stock": 15
+}
+
+### Update Product
+PUT {{host}}/products/10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Samsung S24 Ultra",
+  "price": 26000000
+}
+
+### Delete Product
+DELETE {{host}}/products/10
+Authorization: Bearer {{token}}
+
+
+
+####################################################
+# CART
+####################################################
+
+### Get Cart
+GET {{host}}/cart
+Authorization: Bearer {{token}}
+
+### Add to Cart
+POST {{host}}/cart/add
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 2
+}
+
+### Remove Cart Item
+DELETE {{host}}/cart/item/1
+Authorization: Bearer {{token}}
+
+
+
+####################################################
+# WISHLIST
+####################################################
+
+### Get Wishlist
+GET {{host}}/wishlist
+Authorization: Bearer {{token}}
+
+### Add Wishlist
+POST {{host}}/wishlist/add
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productId": 1
+}
+
+### Remove Wishlist
+DELETE {{host}}/wishlist/1
+Authorization: Bearer {{token}}
+
+
+
+####################################################
+# CHECKOUT + ORDER
+####################################################
+
+### Checkout Cart
+POST {{host}}/checkout
+Authorization: Bearer {{token}}
+
+### Get Orders
+GET {{host}}/orders
+Authorization: Bearer {{token}}
+
+### Get Order Detail
+GET {{host}}/orders/1
+Authorization: Bearer {{token}}
+
+
+
+####################################################
+# PAYMENT MOCK
+####################################################
+
+### Payment
+POST {{host}}/payment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 1,
+  "method": "momo"
+}
+
+
+
+####################################################
+# PRODUCT REVIEW
+####################################################
+
+### Add Review
+POST {{host}}/reviews
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "rating": 5,
+  "comment": "Great product!"
+}
+
+### Get Product Reviews
+GET {{host}}/reviews/1
+
+
+
+####################################################
+# ADMIN DASHBOARD
+####################################################
+
+### Admin Dashboard
+GET {{host}}/admin/dashboard
+Authorization: Bearer {{token}}
+
+####################################################
+# PRODUCT VARIANTS (SIZE / COLOR) ADVANCED 26-40
+####################################################
+
+### Get Product Variants
+GET {{host}}/products/1/variants
+Authorization: Bearer {{token}}
+
+### Create Product Variant
+POST {{host}}/products/1/variants
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "size": "42",
+  "color": "black",
+  "stock": 10,
+  "price": 22000000
+}
+
+### Update Variant Stock
+PATCH {{host}}/variants/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "stock": 8
+}
+
+
+
+####################################################
+# COUPON + DISCOUNT ENGINE
+####################################################
+
+### Create Coupon
+POST {{host}}/coupons
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "code": "SUMMER20",
+  "type": "percent",
+  "value": 20,
+  "expiresAt": "2026-12-31"
+}
+
+### Get Coupons
+GET {{host}}/coupons
+Authorization: Bearer {{token}}
+
+### Validate Coupon
+POST {{host}}/coupons/validate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "code": "SUMMER20",
+  "orderTotal": 5000000
+}
+
+
+
+####################################################
+# SHIPPING CALCULATION
+####################################################
+
+### Calculate Shipping
+POST {{host}}/shipping/calculate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "country": "Vietnam",
+  "city": "Hanoi",
+  "weight": 2.5,
+  "items": 3
+}
+
+
+
+####################################################
+# INVENTORY SYSTEM
+####################################################
+
+### Get Inventory By Product
+GET {{host}}/inventory/product/1
+Authorization: Bearer {{token}}
+
+### Reserve Stock
+POST {{host}}/inventory/reserve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 2
+}
+
+### Release Stock
+POST {{host}}/inventory/release
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 2
+}
+
+
+
+####################################################
+# ANALYTICS API
+####################################################
+
+### Sales Summary
+GET {{host}}/analytics/sales
+Authorization: Bearer {{token}}
+
+### Revenue Analytics
+GET {{host}}/analytics/revenue
+Authorization: Bearer {{token}}
+
+### Top Selling Products
+GET {{host}}/analytics/top-products
+Authorization: Bearer {{token}}
+
+### Orders Analytics
+GET {{host}}/analytics/orders
+Authorization: Bearer {{token}}
+
+
+
+####################################################
+# DEV TOOLS (SEED DATA)
+####################################################
+
+### Seed 1000 Products
+POST {{host}}/dev/seed-products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "count": 1000
+}
+
+
+
+####################################################
+# ORDER WITH COUPON
+####################################################
+
+### Create Order With Coupon
+POST {{host}}/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 2
+    }
+  ],
+  "coupon": "SUMMER20"
+}

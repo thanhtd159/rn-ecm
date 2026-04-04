@@ -6,16 +6,24 @@ import { I18nManager, NativeModules, Platform } from "react-native";
 import type { Language, resources } from "./resources";
 import type { RecursiveKeyOf } from "./types";
 
-import { storage } from "@/lib/storage/local-storage";
+// import { storage } from "@/lib/storage/local-storage";
 import { useMMKVString } from "react-native-mmkv";
 import RNRestart from "react-native-restart";
+import { storageService } from "../storage/local-storage";
 
 type DefaultLocale = typeof resources.en.translation;
 export type TxKeyPath = RecursiveKeyOf<DefaultLocale>;
 
 export const LOCAL = "local";
 
-export const getLanguage = () => storage.getString(LOCAL); // 'Marc' getItem<Language | undefined>(LOCAL);
+// export const getLanguage = () => storage.getString(LOCAL); // 'Marc' getItem<Language | undefined>(LOCAL);
+// export const getLanguage = () => storageService.getItem(LOCAL); // 'Marc' getItem<Language | undefined>(LOCAL);
+
+// type Language = "en" | "vi";
+
+export const getLanguage = (): Language | undefined => {
+  return storageService.getItem<Language>(LOCAL) ?? undefined;
+};
 
 export const translate = memoize(
   (key: TxKeyPath, options = undefined) =>
