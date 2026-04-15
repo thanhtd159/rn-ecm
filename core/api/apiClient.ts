@@ -25,13 +25,13 @@ export const apiClient = axios.create({
 apiClient.interceptors.request.use(async (config) => {
   const token =
     getAccessTokenCache() || (await storageService.getItem(STORAGE_KEYS.TOKEN));
-  console.log("API URL RAW:", process.env.EXPO_PUBLIC_API_URL);
-  console.log("➡️ API Client REQUEST:", {
-    url: config.url,
-    method: config.method,
-    data: config.data,
-    params: config.params,
-  });
+  // console.log("API URL RAW:", process.env.EXPO_PUBLIC_API_URL);
+  // console.log("➡️ API Client REQUEST:", {
+  //   url: config.url,
+  //   method: config.method,
+  //   data: config.data,
+  //   params: config.params,
+  // });
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -44,6 +44,16 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     console.log("apiClient.ts - API Error :", error.response?.data);
+    console.log("❌ AXIOS ERROR FULL:", {
+      message: error.message,
+      code: error.code,
+      url: error.config?.url,
+      baseURL: error.config?.baseURL,
+      fullUrl: error.config?.baseURL + error.config?.url,
+      response: error.response?.data,
+      status: error.response?.status,
+    });
+
     if (error.response?.status === 401) {
       await storageService.removeItem(STORAGE_KEYS.TOKEN);
       // dispatch logout nếu cần

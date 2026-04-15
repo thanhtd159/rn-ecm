@@ -46,11 +46,13 @@ function* loginSaga(action: any): any {
       );
     }
 
-    yield put(loginSuccess(res));
+    yield put(loginSuccess({ ...res, isSuccess: true }));
 
     // navigate sau
-    alert("Login successful! Navigating to products list...");
-    // router.replace("/products/list");
+    // alert("Login successful! Navigating to products list...");
+    // const router = useRouter();
+
+    // router.replace("/home");
   } catch (e) {
     yield put(loginFailure());
   }

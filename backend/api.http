@@ -1,4 +1,4 @@
-@host = http://localhost:3000
+@host = http://192.168.68.105:3000
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3NDA2MzQ2NywiZXhwIjoxNzc0MDY0MzY3fQ.IR3GuYl3Uapn-aLeD2y5kOOw8FMvTUZHPU6LW32Qmkk
 @refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MzUwNDU0NCwiZXhwIjoxNzc0MTA5MzQ0fQ.1j734BBZt-6O_jBpcX8AjxebZVKixhSYDemRtNZFwIY
 

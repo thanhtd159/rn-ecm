@@ -2,10 +2,10 @@ import { Redirect, Tabs } from "expo-router";
 import React from "react";
 
 import { HapticTab } from "@/components/haptic-tab";
-import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useIsFirstTime } from "@/lib/hooks/use-is-first-time";
+import { IconSymbol } from "@lib/ui/icon-symbol";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();

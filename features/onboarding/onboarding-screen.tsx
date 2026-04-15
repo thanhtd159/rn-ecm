@@ -1,17 +1,15 @@
 import { useRouter } from "expo-router";
 import * as React from "react";
 
-import {
-  Button,
-  FocusAwareStatusBar,
-  SafeAreaView,
-  Text,
-  View,
-} from "@/components/ui";
 import { useIsFirstTime } from "@/lib/hooks";
+import { Button, FocusAwareStatusBar, SafeAreaView, Text, View } from "@lib/ui";
+import Constants from "expo-constants";
 import { Cover } from "./components/cover";
 
 export function OnboardingScreen() {
+  const apiUrl = Constants.expoConfig?.extra?.API_URL;
+  console.log("API URL =====: ", apiUrl);
+
   const [_, setIsFirstTime] = useIsFirstTime();
   const router = useRouter();
   return (
